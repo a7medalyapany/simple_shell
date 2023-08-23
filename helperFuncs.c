@@ -1,48 +1,48 @@
 #include "shell.h"
 
 /**
- * free_recurrent_data - free the fields needed each loop
+ * freeCD - free the fields needed each loop
  * @data: struct of the program's data
  * Return: Nothing
  */
-void free_recurrent_data(data_of_program *data)
+void freeCD(progData *data)
 {
     if (data->tokens)
-        free_array_of_pointers(data->tokens);
-    if (data->input_line)
-        free(data->input_line);
-    if (data->command_name)
-        free(data->command_name);
+        freeArr(data->tokens);
+    if (data->inLine)
+        free(data->inLine);
+    if (data->cmdLine)
+        free(data->cmdLine);
 
-    data->input_line = NULL;
-    data->command_name = NULL;
+    data->inLine = NULL;
+    data->cmdLine = NULL;
     data->tokens = NULL;
 }
 
 /**
- * free_all_data - free all field of the data
+ * freeAD - free all field of the data
  * @data: struct of the program's data
  * Return: Nothing
  */
-void free_all_data(data_of_program *data)
+void freeAD(progData *data)
 {
-    if (data->file_descriptor != 0)
+    if (data->FD != 0)
     {
-        if (close(data->file_descriptor))
-            perror(data->program_name);
+        if (close(data->FD))
+            perror(data->progName);
     }
-    free_recurrent_data(data);
-    free_array_of_pointers(data->env);
-    free_array_of_pointers(data->alias_list);
+    freeCD(data);
+    freeArr(data->env);
+    freeArr(data->aliasList);
 }
 
 /**
- * free_array_of_pointers - frees each pointer of an array of pointers and the
+ * freeArr - frees each pointer of an array of pointers and the
  * array too
  * @array: array of pointers
  * Return: nothing
  */
-void free_array_of_pointers(char **array)
+void freeArr(char **array)
 {
     int i;
 

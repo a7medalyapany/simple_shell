@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * str_length - returns the length of a string.
+ * myStrLen - returns the length of a string.
  * @string: pointer to string.
  * Return: length of string.
  */
-int str_length(char *string)
+int myStrLen(char *string)
 {
     int length = 0;
 
@@ -19,11 +19,11 @@ int str_length(char *string)
 }
 
 /**
- * str_duplicate - duplicates an string
+ * myStrDup - duplicates an string
  * @string: String to be copied
  * Return: pointer to the array
  */
-char *str_duplicate(char *string)
+char *myStrDup(char *string)
 {
     char *result;
     int length, i;
@@ -31,7 +31,7 @@ char *str_duplicate(char *string)
     if (string == NULL)
         return (NULL);
 
-    length = str_length(string) + 1;
+    length = myStrLen(string) + 1;
 
     result = malloc(sizeof(char) * length);
 
@@ -50,15 +50,15 @@ char *str_duplicate(char *string)
 }
 
 /**
- * str_compare - Compare two strings
+ * myStrCmp - Compare two strings
  * @string1: String one, or the shorter
  * @string2: String two, or the longer
  * @number: number of characters to be compared, 0 if infinite
  * Return: 1 if the strings are equals,0 if the strings are different
  */
-int str_compare(char *string1, char *string2, int number)
+int myStrCmp(char *string1, char *string2, int number)
 {
-    int iterator;
+    int itrtor;
 
     if (string1 == NULL && string2 == NULL)
         return (1);
@@ -68,20 +68,20 @@ int str_compare(char *string1, char *string2, int number)
 
     if (number == 0) /* infinite longitud */
     {
-        if (str_length(string1) != str_length(string2))
+        if (myStrLen(string1) != myStrLen(string2))
             return (0);
-        for (iterator = 0; string1[iterator]; iterator++)
+        for (itrtor = 0; string1[itrtor]; itrtor++)
         {
-            if (string1[iterator] != string2[iterator])
+            if (string1[itrtor] != string2[itrtor])
                 return (0);
         }
         return (1);
     }
     else /* if there is a number of chars to be compared */
     {
-        for (iterator = 0; iterator < number; iterator++)
+        for (itrtor = 0; itrtor < number; itrtor++)
         {
-            if (string1[iterator] != string2[iterator])
+            if (string1[itrtor] != string2[itrtor])
                 return (0);
         }
         return (1);
@@ -89,24 +89,24 @@ int str_compare(char *string1, char *string2, int number)
 }
 
 /**
- * str_concat - concatenates two strings.
+ * myStrCon - concatenates two strings.
  * @string1: String to be concatenated
  * @string2: String to be concatenated
  *
  * Return: pointer to the array
  */
-char *str_concat(char *string1, char *string2)
+char *myStrCon(char *string1, char *string2)
 {
     char *result;
     int length1 = 0, length2 = 0;
 
     if (string1 == NULL)
         string1 = "";
-    length1 = str_length(string1);
+    length1 = myStrLen(string1);
 
     if (string2 == NULL)
         string2 = "";
-    length2 = str_length(string2);
+    length2 = myStrLen(string2);
 
     result = malloc(sizeof(char) * (length1 + length2 + 1));
     if (result == NULL)
@@ -133,15 +133,15 @@ char *str_concat(char *string1, char *string2)
 }
 
 /**
- * str_reverse - reverses a string.
+ * myStrRev - reverses a string.
  *
  * @string: pointer to string.
  * Return: void.
  */
-void str_reverse(char *string)
+void myStrRev(char *string)
 {
 
-    int i = 0, length = str_length(string) - 1;
+    int i = 0, length = myStrLen(string) - 1;
     char hold;
 
     while (i < length)

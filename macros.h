@@ -7,7 +7,7 @@
 /* Resume from the unused attibute */
 #define UNUSED __attribute__((unused))
 
-/* buffer size for each read call in _getline */
+/* buffer size for each read call in myGetLine */
 #define BUFFER_SIZE 1024
 
 /************* FORMATTED STRING FOR HELP BUILT IN **************/
@@ -21,9 +21,9 @@
                     "	as cd $OLDPWD.\n\n"
 
 #define HELP_EXIT_MSG "exit=\n"                                                                  \
-                      "exit:\texit [STATUS]\n\n"                                                 \
+                      "exit:\texit [stts]\n\n"                                                 \
                       "	Exit of the simple-shell.\n\n"                                           \
-                      "	Exits the shell with a status of N.  If N is omitted, the exit status\n" \
+                      "	Exits the shell with a stts of N.  If N is omitted, the exit stts\n" \
                       "	is that of the last command executed.\n\n"
 
 #define HELP_ENV_MSG "env=\n"                  \
@@ -51,7 +51,7 @@
                  "	Arguments:\n\n"                                                          \
                  "	BUILTIN_NAME specifiying a help topic.\n\n"                              \
                  "	cd\t[dir]\n"                                                             \
-                 "	exit\t[status]\n"                                                        \
+                 "	exit\t[stts]\n"                                                        \
                  "	env\n"                                                                   \
                  "	setenv\t[variable value]\n"                                              \
                  "	unset\t[variable]\n"                                                     \

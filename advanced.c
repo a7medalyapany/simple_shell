@@ -1,35 +1,35 @@
 #include "shell.h"
 
 /**
- * expand_variables - expand variables
+ * expVars - expand variables
  * @data: a pointer to a struct of the program's data
  *
  * Return: nothing, but sets errno.
  */
-void expand_variables(data_of_program *data)
+void expVars(progData *data)
 {
     int i, j;
     char line[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
 
-    if (data->input_line == NULL)
+    if (data->inLine == NULL)
         return;
-    buffer_add(line, data->input_line);
+    buffAdd(line, data->inLine);
     for (i = 0; line[i]; i++)
         if (line[i] == '#')
             line[i--] = '\0';
         else if (line[i] == '$' && line[i + 1] == '?')
         {
             line[i] = '\0';
-            long_to_string(errno, expansion, 10);
-            buffer_add(line, expansion);
-            buffer_add(line, data->input_line + i + 2);
+            longStr(errno, expansion, 10);
+            buffAdd(line, expansion);
+            buffAdd(line, data->inLine + i + 2);
         }
         else if (line[i] == '$' && line[i + 1] == '$')
         {
             line[i] = '\0';
-            long_to_string(getpid(), expansion, 10);
-            buffer_add(line, expansion);
-            buffer_add(line, data->input_line + i + 2);
+            longStr(getpid(), expansion, 10);
+            buffAdd(line, expansion);
+            buffAdd(line, data->inLine + i + 2);
         }
         else if (line[i] == '$' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
             continue;
@@ -37,34 +37,34 @@ void expand_variables(data_of_program *data)
         {
             for (j = 1; line[i + j] && line[i + j] != ' '; j++)
                 expansion[j - 1] = line[i + j];
-            temp = env_get_key(expansion, data);
+            temp = envGK(expansion, data);
             line[i] = '\0', expansion[0] = '\0';
-            buffer_add(expansion, line + i + j);
-            temp ? buffer_add(line, temp) : 1;
-            buffer_add(line, expansion);
+            buffAdd(expansion, line + i + j);
+            temp ? buffAdd(line, temp) : 1;
+            buffAdd(line, expansion);
         }
-    if (!str_compare(data->input_line, line, 0))
+    if (!myStrCmp(data->inLine, line, 0))
     {
-        free(data->input_line);
-        data->input_line = str_duplicate(line);
+        free(data->inLine);
+        data->inLine = myStrDup(line);
     }
 }
 
 /**
- * expand_alias - expans aliases
+ * expAlias - expans aliases
  * @data: a pointer to a struct of the program's data
  *
  * Return: nothing, but sets errno.
  */
-void expand_alias(data_of_program *data)
+void expAlias(progData *data)
 {
     int i, j, was_expanded = 0;
     char line[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
 
-    if (data->input_line == NULL)
+    if (data->inLine == NULL)
         return;
 
-    buffer_add(line, data->input_line);
+    buffAdd(line, data->inLine);
 
     for (i = 0; line[i]; i++)
     {
@@ -72,37 +72,37 @@ void expand_alias(data_of_program *data)
             expansion[j] = line[i + j];
         expansion[j] = '\0';
 
-        temp = get_alias(data, expansion);
+        temp = getAlias(data, expansion);
         if (temp)
         {
             expansion[0] = '\0';
-            buffer_add(expansion, line + i + j);
+            buffAdd(expansion, line + i + j);
             line[i] = '\0';
-            buffer_add(line, temp);
-            line[str_length(line)] = '\0';
-            buffer_add(line, expansion);
+            buffAdd(line, temp);
+            line[myStrLen(line)] = '\0';
+            buffAdd(line, expansion);
             was_expanded = 1;
         }
         break;
     }
     if (was_expanded)
     {
-        free(data->input_line);
-        data->input_line = str_duplicate(line);
+        free(data->inLine);
+        data->inLine = myStrDup(line);
     }
 }
 
 /**
- * buffer_add - append string at end of the buffer
+ * buffAdd - append string at end of the buffer
  * @buffer: buffer to be filled
  * @str_to_add: string to be copied in the buffer
  * Return: nothing, but sets errno.
  */
-int buffer_add(char *buffer, char *str_to_add)
+int buffAdd(char *buffer, char *str_to_add)
 {
     int length, i;
 
-    length = str_length(buffer);
+    length = myStrLen(buffer);
     for (i = 0; str_to_add[i]; i++)
     {
         buffer[length + i] = str_to_add[i];

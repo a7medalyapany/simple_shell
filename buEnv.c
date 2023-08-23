@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * builtin_env - shows the environment where the shell runs
+ * myEnv - shows the environment where the shell runs
  * @data: struct for the program's data
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-int builtin_env(data_of_program *data)
+int myEnv(progData *data)
 {
     int i;
     char cpname[50] = {'\0'};
@@ -13,28 +13,28 @@ int builtin_env(data_of_program *data)
 
     /* if not arguments */
     if (data->tokens[1] == NULL)
-        print_environ(data);
+        printEnv(data);
     else
     {
         for (i = 0; data->tokens[1][i]; i++)
         { /* checks if exists a char = */
             if (data->tokens[1][i] == '=')
-            {   /* checks if exists a var with the same name and change its value*/
+            { /* checks if exists a var with the same name and change its value*/
                 /* temporally */
-                var_copy = str_duplicate(env_get_key(cpname, data));
+                var_copy = myStrDup(envGK(cpname, data));
                 if (var_copy != NULL)
-                    env_set_key(cpname, data->tokens[1] + i + 1, data);
+                    envSK(cpname, data->tokens[1] + i + 1, data);
 
                 /* print the environ */
-                print_environ(data);
-                if (env_get_key(cpname, data) == NULL)
+                printEnv(data);
+                if (envGK(cpname, data) == NULL)
                 { /* print the variable if it does not exist in the environ */
-                    _print(data->tokens[1]);
-                    _print("\n");
+                    aiPrint(data->tokens[1]);
+                    aiPrint("\n");
                 }
                 else
                 { /* returns the old value of the var*/
-                    env_set_key(cpname, var_copy, data);
+                    envSK(cpname, var_copy, data);
                     free(var_copy);
                 }
                 return (0);
@@ -42,18 +42,18 @@ int builtin_env(data_of_program *data)
             cpname[i] = data->tokens[1][i];
         }
         errno = 2;
-        perror(data->command_name);
+        perror(data->cmdLine);
         errno = 127;
     }
     return (0);
 }
 
 /**
- * builtin_set_env - ..
+ * mySetEnv - ..
  * @data: struct for the program's data
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-int builtin_set_env(data_of_program *data)
+int mySetEnv(progData *data)
 {
     /* validate args */
     if (data->tokens[1] == NULL || data->tokens[2] == NULL)
@@ -61,21 +61,21 @@ int builtin_set_env(data_of_program *data)
     if (data->tokens[3] != NULL)
     {
         errno = E2BIG;
-        perror(data->command_name);
+        perror(data->cmdLine);
         return (5);
     }
 
-    env_set_key(data->tokens[1], data->tokens[2], data);
+    envSK(data->tokens[1], data->tokens[2], data);
 
     return (0);
 }
 
 /**
- * builtin_unset_env - ..
+ * myUnSetEnv - ..
  * @data: struct for the program's data'
  * Return: ..
  */
-int builtin_unset_env(data_of_program *data)
+int myUnSetEnv(progData *data)
 {
     /* validate args */
     if (data->tokens[1] == NULL)
@@ -83,10 +83,10 @@ int builtin_unset_env(data_of_program *data)
     if (data->tokens[2] != NULL)
     {
         errno = E2BIG;
-        perror(data->command_name);
+        perror(data->cmdLine);
         return (5);
     }
-    env_remove_key(data->tokens[1], data);
+    envRK(data->tokens[1], data);
 
     return (0);
 }

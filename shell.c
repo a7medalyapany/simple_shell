@@ -8,12 +8,12 @@
  */
 int main(int argc, char *argv[], char *env[])
 {
-    data_of_program data_struct = {NULL}, *data = &data_struct;
+    progData ds = {NULL}, *data = &ds;
     char *prompt = "";
 
-    inicialize_data(data, argc, argv, env);
+    initData(data, argc, argv, env);
 
-    signal(SIGINT, handle_ctrl_c);
+    signal(SIGINT, hCRTLC);
 
     if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && argc == 1)
     {              /* We are in the terminal, interactive mode */
@@ -21,48 +21,48 @@ int main(int argc, char *argv[], char *env[])
         prompt = PROMPT_MSG;
     }
     errno = 0;
-    sisifo(prompt, data);
+    showPrompt(prompt, data);
     return (0);
 }
 
 /**
- * handle_ctrl_c - print the prompt in a new line
+ * hCRTLC - print the prompt in a new line
  * when the signal SIGINT (ctrl + c) is send to the program
  * @UNUSED: option of the prototype
  */
-void handle_ctrl_c(int opr UNUSED)
+void hCRTLC(int opr UNUSED)
 {
-    _print("\n");
-    _print(PROMPT_MSG);
+    aiPrint("\n");
+    aiPrint(PROMPT_MSG);
 }
 
 /**
- * inicialize_data - inicialize the struct with the info of the program
+ * initData - inicialize the struct with the info of the program
  * @data: pointer to the structure of data
  * @argv: array of arguments pased to the program execution
  * @env: environ pased to the program execution
  * @argc: number of values received from the command line
  */
-void inicialize_data(data_of_program *data, int argc, char *argv[], char **env)
+void initData(progData *data, int argc, char *argv[], char **env)
 {
     int i = 0;
 
-    data->program_name = argv[0];
-    data->input_line = NULL;
-    data->command_name = NULL;
-    data->exec_counter = 0;
+    data->progName = argv[0];
+    data->inLine = NULL;
+    data->cmdLine = NULL;
+    data->exeCounter = 0;
     /* define the file descriptor to be readed*/
     if (argc == 1)
-        data->file_descriptor = STDIN_FILENO;
+        data->FD = STDIN_FILENO;
     else
     {
-        data->file_descriptor = open(argv[1], O_RDONLY);
-        if (data->file_descriptor == -1)
+        data->FD = open(argv[1], O_RDONLY);
+        if (data->FD == -1)
         {
-            _printe(data->program_name);
-            _printe(": 0: Can't open ");
-            _printe(argv[1]);
-            _printe("\n");
+            aiPrinte(data->progName);
+            aiPrinte(": 0: Can't open ");
+            aiPrinte(argv[1]);
+            aiPrinte("\n");
             exit(127);
         }
     }
@@ -72,49 +72,49 @@ void inicialize_data(data_of_program *data, int argc, char *argv[], char **env)
     {
         for (; env[i]; i++)
         {
-            data->env[i] = str_duplicate(env[i]);
+            data->env[i] = myStrDup(env[i]);
         }
     }
     data->env[i] = NULL;
     env = data->env;
 
-    data->alias_list = malloc(sizeof(char *) * 20);
+    data->aliasList = malloc(sizeof(char *) * 20);
     for (i = 0; i < 20; i++)
     {
-        data->alias_list[i] = NULL;
+        data->aliasList[i] = NULL;
     }
 }
 /**
- * sisifo - its a infinite loop that shows the prompt
+ * showPrompt - its a infinite loop that shows the prompt
  * @prompt: prompt to be printed
  * @data: its a infinite loop that shows the prompt
  */
-void sisifo(char *prompt, data_of_program *data)
+void showPrompt(char *prompt, progData *data)
 {
-    int error_code = 0, string_len = 0;
+    int errCode = 0, string_len = 0;
 
-    while (++(data->exec_counter))
+    while (++(data->exeCounter))
     {
-        _print(prompt);
-        error_code = string_len = _getline(data);
+        aiPrint(prompt);
+        errCode = string_len = myGetLine(data);
 
-        if (error_code == EOF)
+        if (errCode == EOF)
         {
-            free_all_data(data);
+            freeAD(data);
             exit(errno); /* if EOF is the fisrt Char of string, exit*/
         }
         if (string_len >= 1)
         {
-            expand_alias(data);
-            expand_variables(data);
+            expAlias(data);
+            expVars(data);
             tokenize(data);
             if (data->tokens[0])
             { /* if a text is given to prompt, execute */
-                error_code = execute(data);
-                if (error_code != 0)
-                    _print_error(error_code, data);
+                errCode = execute(data);
+                if (errCode != 0)
+                    aiPrintErr(errCode, data);
             }
-            free_recurrent_data(data);
+            freeCD(data);
         }
     }
 }

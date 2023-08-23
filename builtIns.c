@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * builtin_exit - exit of the program with the status
+ * myExit - exit of the program with the stts
  * @data: struct for the program's data
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-int builtin_exit(data_of_program *data)
+int myExit(progData *data)
 {
     int i;
 
@@ -17,85 +17,85 @@ int builtin_exit(data_of_program *data)
                 errno = 2;
                 return (2);
             }
-        errno = _atoi(data->tokens[1]);
+        errno = myAtoi(data->tokens[1]);
     }
-    free_all_data(data);
+    freeAD(data);
     exit(errno);
 }
 
 /**
- * builtin_cd - change the current directory
+ * myCD - change the current directory
  * @data: struct for the program's data
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-int builtin_cd(data_of_program *data)
+int myCD(progData *data)
 {
-    char *dir_home = env_get_key("HOME", data), *dir_old = NULL;
-    char old_dir[128] = {0};
-    int error_code = 0;
+    char *dirHome = envGK("HOME", data), *dirOld = NULL;
+    char oldDir[128] = {0};
+    int errCode = 0;
 
     if (data->tokens[1])
     {
-        if (str_compare(data->tokens[1], "-", 0))
+        if (myStrCmp(data->tokens[1], "-", 0))
         {
-            dir_old = env_get_key("OLDPWD", data);
-            if (dir_old)
-                error_code = set_work_directory(data, dir_old);
-            _print(env_get_key("PWD", data));
-            _print("\n");
+            dirOld = envGK("OLDPWD", data);
+            if (dirOld)
+                errCode = setWD(data, dirOld);
+            aiPrint(envGK("PWD", data));
+            aiPrint("\n");
 
-            return (error_code);
+            return (errCode);
         }
         else
         {
-            return (set_work_directory(data, data->tokens[1]));
+            return (setWD(data, data->tokens[1]));
         }
     }
     else
     {
-        if (!dir_home)
-            dir_home = getcwd(old_dir, 128);
+        if (!dirHome)
+            dirHome = getcwd(oldDir, 128);
 
-        return (set_work_directory(data, dir_home));
+        return (setWD(data, dirHome));
     }
     return (0);
 }
 
 /**
- * set_work_directory - set the work directory
+ * setWD - set the work directory
  * @data: struct for the program's data
- * @new_dir: path to be set as work directory
+ * @newDir: path to be set as work directory
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-int set_work_directory(data_of_program *data, char *new_dir)
+int setWD(progData *data, char *newDir)
 {
-    char old_dir[128] = {0};
+    char oldDir[128] = {0};
     int err_code = 0;
 
-    getcwd(old_dir, 128);
+    getcwd(oldDir, 128);
 
-    if (!str_compare(old_dir, new_dir, 0))
+    if (!myStrCmp(oldDir, newDir, 0))
     {
-        err_code = chdir(new_dir);
+        err_code = chdir(newDir);
         if (err_code == -1)
         {
             errno = 2;
             return (3);
         }
-        env_set_key("PWD", new_dir, data);
+        envSK("PWD", newDir, data);
     }
-    env_set_key("OLDPWD", old_dir, data);
+    envSK("OLDPWD", oldDir, data);
     return (0);
 }
 
 /**
- * builtin_help - shows the environment where the shell runs
+ * myHelp - shows the environment where the shell runs
  * @data: struct for the program's data
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-int builtin_help(data_of_program *data)
+int myHelp(progData *data)
 {
-    int i, length = 0;
+    int i, len = 0;
     char *mensajes[6] = {NULL};
 
     mensajes[0] = HELP_MSG;
@@ -103,13 +103,13 @@ int builtin_help(data_of_program *data)
     /* validate args */
     if (data->tokens[1] == NULL)
     {
-        _print(mensajes[0] + 6);
+        aiPrint(mensajes[0] + 6);
         return (1);
     }
     if (data->tokens[2] != NULL)
     {
         errno = E2BIG;
-        perror(data->command_name);
+        perror(data->cmdLine);
         return (5);
     }
     mensajes[1] = HELP_EXIT_MSG;
@@ -120,38 +120,38 @@ int builtin_help(data_of_program *data)
 
     for (i = 0; mensajes[i]; i++)
     {
-        length = str_length(data->tokens[1]);
-        if (str_compare(data->tokens[1], mensajes[i], length))
+        len = myStrLen(data->tokens[1]);
+        if (myStrCmp(data->tokens[1], mensajes[i], len))
         {
-            _print(mensajes[i] + length + 1);
+            aiPrint(mensajes[i] + len + 1);
             return (1);
         }
     }
     /*if there is no match, print error and return -1 */
     errno = EINVAL;
-    perror(data->command_name);
+    perror(data->cmdLine);
     return (0);
 }
 
 /**
- * builtin_alias - add, remove or show aliases
+ * myAlias - add, remove or show aliases
  * @data: struct for the program's data
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-int builtin_alias(data_of_program *data)
+int myAlias(progData *data)
 {
     int i = 0;
 
     /* if there are no arguments, print all environment */
     if (data->tokens[1] == NULL)
-        return (print_alias(data, NULL));
+        return (printAlias(data, NULL));
 
     while (data->tokens[++i])
     { /* if there are arguments, set or print each env variable*/
-        if (count_characters(data->tokens[i], "="))
+        if (countChars(data->tokens[i], "="))
             set_alias(data->tokens[i], data);
         else
-            print_alias(data, data->tokens[i]);
+            printAlias(data, data->tokens[i]);
     }
 
     return (0);

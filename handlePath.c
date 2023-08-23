@@ -3,29 +3,29 @@
 int check_file(char *full_path);
 
 /**
- * find_program - find a program in path
+ * findProg - find a program in path
  * @data: a pointer to the program's data
  * Return: 0 if success, errcode otherwise
  */
 
-int find_program(data_of_program *data)
+int findProg(progData *data)
 {
-    int i = 0, ret_code = 0;
+    int i = 0, retCode = 0;
     char **directories;
 
-    if (!data->command_name)
+    if (!data->cmdLine)
         return (2);
 
     /**if is a full_path or an executable in the same path */
-    if (data->command_name[0] == '/' || data->command_name[0] == '.')
-        return (check_file(data->command_name));
+    if (data->cmdLine[0] == '/' || data->cmdLine[0] == '.')
+        return (check_file(data->cmdLine));
 
     free(data->tokens[0]);
-    data->tokens[0] = str_concat(str_duplicate("/"), data->command_name);
+    data->tokens[0] = myStrCon(myStrDup("/"), data->cmdLine);
     if (!data->tokens[0])
         return (2);
 
-    directories = tokenize_path(data); /* search in the PATH */
+    directories = tokenizePath(data); /* search in the PATH */
 
     if (!directories || !directories[0])
     {
@@ -34,30 +34,30 @@ int find_program(data_of_program *data)
     }
     for (i = 0; directories[i]; i++)
     { /* appends the function_name to path */
-        directories[i] = str_concat(directories[i], data->tokens[0]);
-        ret_code = check_file(directories[i]);
-        if (ret_code == 0 || ret_code == 126)
+        directories[i] = myStrCon(directories[i], data->tokens[0]);
+        retCode = check_file(directories[i]);
+        if (retCode == 0 || retCode == 126)
         { /* the file was found, is not a directory and has execute permisions*/
             errno = 0;
             free(data->tokens[0]);
-            data->tokens[0] = str_duplicate(directories[i]);
-            free_array_of_pointers(directories);
-            return (ret_code);
+            data->tokens[0] = myStrDup(directories[i]);
+            freeArr(directories);
+            return (retCode);
         }
     }
     free(data->tokens[0]);
     data->tokens[0] = NULL;
-    free_array_of_pointers(directories);
-    return (ret_code);
+    freeArr(directories);
+    return (retCode);
 }
 
 /**
- * tokenize_path - tokenize the path in directories
+ * tokenizePath - tokenize the path in directories
  * @data: a pointer to the program's data
  * Return: array of path directories
  */
 
-char **tokenize_path(data_of_program *data)
+char **tokenizePath(progData *data)
 {
     int i = 0;
     int counter_directories = 2;
@@ -65,13 +65,13 @@ char **tokenize_path(data_of_program *data)
     char *PATH;
 
     /* get the PATH value*/
-    PATH = env_get_key("PATH", data);
+    PATH = envGK("PATH", data);
     if ((PATH == NULL) || PATH[0] == '\0')
     { /*path not found*/
         return (NULL);
     }
 
-    PATH = str_duplicate(PATH);
+    PATH = myStrDup(PATH);
 
     /* find the number of directories in the PATH */
     for (i = 0; PATH[i]; i++)
@@ -85,10 +85,10 @@ char **tokenize_path(data_of_program *data)
 
     /*tokenize and duplicate each token of path*/
     i = 0;
-    tokens[i] = str_duplicate(_strtok(PATH, ":"));
+    tokens[i] = myStrDup(myStrTok(PATH, ":"));
     while (tokens[i++])
     {
-        tokens[i] = str_duplicate(_strtok(NULL, ":"));
+        tokens[i] = myStrDup(myStrTok(NULL, ":"));
     }
 
     free(PATH);
