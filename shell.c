@@ -16,8 +16,8 @@ int main(int argc, char *argv[], char *env[])
     signal(SIGINT, hCRTLC);
 
     if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && argc == 1)
-    {              /* We are in the terminal, interactive mode */
-        errno = 2; /*???????*/
+    {
+        errno = 2;
         prompt = PROMPT_MSG;
     }
     errno = 0;
@@ -51,7 +51,7 @@ void initData(progData *data, int argc, char *argv[], char **env)
     data->inLine = NULL;
     data->cmdLine = NULL;
     data->exeCounter = 0;
-    /* define the file descriptor to be readed*/
+
     if (argc == 1)
         data->FD = STDIN_FILENO;
     else
@@ -101,7 +101,7 @@ void showPrompt(char *prompt, progData *data)
         if (errCode == EOF)
         {
             freeAD(data);
-            exit(errno); /* if EOF is the fisrt Char of string, exit*/
+            exit(errno);
         }
         if (string_len >= 1)
         {
@@ -109,7 +109,7 @@ void showPrompt(char *prompt, progData *data)
             expVars(data);
             tokenize(data);
             if (data->tokens[0])
-            { /* if a text is given to prompt, execute */
+            {
                 errCode = execute(data);
                 if (errCode != 0)
                     aiPrintErr(errCode, data);

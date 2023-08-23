@@ -42,31 +42,26 @@ int envSK(char *key, char *value, progData *data)
 {
     int i, keyLen = 0, isNewKey = 1;
 
-    /* validate the arguments */
     if (key == NULL || value == NULL || data->env == NULL)
         return (1);
 
-    /* obtains the leng of the variable requested */
     keyLen = myStrLen(key);
 
     for (i = 0; data->env[i]; i++)
-    { /* Iterates through the environ and check for coincidence of the vame */
+    {
         if (myStrCmp(key, data->env[i], keyLen) &&
             data->env[i][keyLen] == '=')
-        { /* If key already exists */
+        {
             isNewKey = 0;
-            /* free the entire variable, it is new created below */
             free(data->env[i]);
             break;
         }
     }
-    /* make an string of the form key=value */
     data->env[i] = myStrCon(myStrDup(key), "=");
     data->env[i] = myStrCon(data->env[i], value);
 
     if (isNewKey)
-    { /* if the variable is new, it is create at end of actual list and we need*/
-        /* to put the NULL value in the next position */
+    {
         data->env[i + 1] = NULL;
     }
     return (0);
@@ -82,27 +77,23 @@ int envRK(char *key, progData *data)
 {
     int i, keyLen = 0;
 
-    /* validate the arguments */
     if (key == NULL || data->env == NULL)
         return (0);
 
-    /* obtains the leng of the variable requested */
     keyLen = myStrLen(key);
 
     for (i = 0; data->env[i]; i++)
-    { /* iterates through the environ and checks for coincidences */
+    {
         if (myStrCmp(key, data->env[i], keyLen) &&
             data->env[i][keyLen] == '=')
-        { /* if key already exists, remove them */
+        {
             free(data->env[i]);
 
-            /* move the others keys one position down */
             i++;
             for (; data->env[i]; i++)
             {
                 data->env[i - 1] = data->env[i];
             }
-            /* put the NULL value at the new end of the list */
             data->env[i - 1] = NULL;
             return (1);
         }

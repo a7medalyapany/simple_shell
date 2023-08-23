@@ -16,7 +16,6 @@ int findProg(progData *data)
     if (!data->cmdLine)
         return (2);
 
-    /**if is a full_path or an executable in the same path */
     if (data->cmdLine[0] == '/' || data->cmdLine[0] == '.')
         return (check_file(data->cmdLine));
 
@@ -25,7 +24,7 @@ int findProg(progData *data)
     if (!data->tokens[0])
         return (2);
 
-    directories = tokenizePath(data); /* search in the PATH */
+    directories = tokenizePath(data);
 
     if (!directories || !directories[0])
     {
@@ -33,11 +32,11 @@ int findProg(progData *data)
         return (127);
     }
     for (i = 0; directories[i]; i++)
-    { /* appends the function_name to path */
+    {
         directories[i] = myStrCon(directories[i], data->tokens[0]);
         retCode = check_file(directories[i]);
         if (retCode == 0 || retCode == 126)
-        { /* the file was found, is not a directory and has execute permisions*/
+        {
             errno = 0;
             free(data->tokens[0]);
             data->tokens[0] = myStrDup(directories[i]);
@@ -64,26 +63,22 @@ char **tokenizePath(progData *data)
     char **tokens = NULL;
     char *PATH;
 
-    /* get the PATH value*/
     PATH = envGK("PATH", data);
     if ((PATH == NULL) || PATH[0] == '\0')
-    { /*path not found*/
+    {
         return (NULL);
     }
 
     PATH = myStrDup(PATH);
 
-    /* find the number of directories in the PATH */
     for (i = 0; PATH[i]; i++)
     {
         if (PATH[i] == ':')
             counter_directories++;
     }
 
-    /* reserve space for the array of pointers */
     tokens = malloc(sizeof(char *) * counter_directories);
 
-    /*tokenize and duplicate each token of path*/
     i = 0;
     tokens[i] = myStrDup(myStrTok(PATH, ":"));
     while (tokens[i++])
@@ -116,7 +111,6 @@ int check_file(char *full_path)
         }
         return (0);
     }
-    /*if not exist the file*/
     errno = 127;
     return (127);
 }

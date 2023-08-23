@@ -10,10 +10,10 @@ int myExit(progData *data)
     int i;
 
     if (data->tokens[1] != NULL)
-    { /*if exists arg for exit, check if is a number*/
+    {
         for (i = 0; data->tokens[1][i]; i++)
             if ((data->tokens[1][i] < '0' || data->tokens[1][i] > '9') && data->tokens[1][i] != '+')
-            { /*if is not a number*/
+            {
                 errno = 2;
                 return (2);
             }
@@ -100,7 +100,6 @@ int myHelp(progData *data)
 
     mensajes[0] = HELP_MSG;
 
-    /* validate args */
     if (data->tokens[1] == NULL)
     {
         aiPrint(mensajes[0] + 6);
@@ -127,7 +126,6 @@ int myHelp(progData *data)
             return (1);
         }
     }
-    /*if there is no match, print error and return -1 */
     errno = EINVAL;
     perror(data->cmdLine);
     return (0);
@@ -142,12 +140,11 @@ int myAlias(progData *data)
 {
     int i = 0;
 
-    /* if there are no arguments, print all environment */
     if (data->tokens[1] == NULL)
         return (printAlias(data, NULL));
 
     while (data->tokens[++i])
-    { /* if there are arguments, set or print each env variable*/
+    {
         if (countChars(data->tokens[i], "="))
             setAlias(data->tokens[i], data);
         else

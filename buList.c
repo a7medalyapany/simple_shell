@@ -19,16 +19,12 @@ int buList(progData *data)
         {"unsetenv", myUnSetEnv},
         {NULL, NULL}};
 
-    /*walk through the structure*/
     for (itrtor = 0; options[itrtor].builtin != NULL; itrtor++)
     {
-        /*if there is a match between the given command and a builtin,*/
         if (myStrCmp(options[itrtor].builtin, data->cmdLine, 0))
         {
-            /*execute the function, and return the return value of the function*/
             return (options[itrtor].function(data));
         }
-        /*if there is no match return -1 */
     }
     return (-1);
 }
