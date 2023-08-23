@@ -149,7 +149,7 @@ int myAlias(progData *data)
     while (data->tokens[++i])
     { /* if there are arguments, set or print each env variable*/
         if (countChars(data->tokens[i], "="))
-            set_alias(data->tokens[i], data);
+            setAlias(data->tokens[i], data);
         else
             printAlias(data, data->tokens[i]);
     }

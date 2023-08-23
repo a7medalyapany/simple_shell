@@ -38,7 +38,7 @@ int execute(progData *data)
         { /* I am the father, I wait and check the exit stts of the child */
             wait(&stts);
             if (WIFEXITED(stts))
-                errno = WEXITstts(stts);
+                errno = WEXITSTATUS(stts);
             else if (WIFSIGNALED(stts))
                 errno = 128 + WTERMSIG(stts);
         }
