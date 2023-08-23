@@ -39,3 +39,4 @@ void tokenize(progData *data)
 		data->tokens[i] = myStrDup(myStrTok(NULL, delimiter));
 	}
 }
+

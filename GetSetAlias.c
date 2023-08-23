@@ -66,3 +66,4 @@ int setAlias(char *alias_string, progData *data)
 		data->aliasList[j] = myStrDup(alias_string);
 	return (0);
 }
+

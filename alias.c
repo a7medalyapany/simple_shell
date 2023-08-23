@@ -16,7 +16,9 @@ int printAlias(progData *data, char *alias)
 		aliasLen = myStrLen(alias);
 		for (i = 0; data->aliasList[i]; i++)
 		{
-			if (!alias || (myStrCmp(data->aliasList[i], alias, aliasLen) && data->aliasList[i][aliasLen] == '='))
+			if (!alias ||
+					(myStrCmp(data->aliasList[i], alias, aliasLen)
+					 && data->aliasList[i][aliasLen] == '='))
 			{
 				for (j = 0; data->aliasList[i][j]; j++)
 				{
@@ -35,3 +37,4 @@ int printAlias(progData *data, char *alias)
 
 	return (0);
 }
+

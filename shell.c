@@ -118,3 +118,4 @@ void showPrompt(char *prompt, progData *data)
 		}
 	}
 }
+

@@ -6,18 +6,17 @@
  */
 int execute(progData *data)
 {
-	int returnVal = 0, stts;
+	int retrnVal = 0, stts;
 	pid_t pidd;
 
-	returnVal = buList(data);
-	if (returnVal != -1)
-		return (returnVal);
+	retrnVal = buList(data);
+	if (retrnVal != -1)
+		return (retrnVal);
 
-	returnVal = findProg(data);
-	if (returnVal)
-	{
-		return (returnVal);
-	}
+	retrnVal = findProg(data);
+	if (retrnVal)
+		return (retrnVal);
+
 	else
 	{
 		pidd = fork();
@@ -28,8 +27,8 @@ int execute(progData *data)
 		}
 		if (pidd == 0)
 		{
-			returnVal = execve(data->tokens[0], data->tokens, data->env);
-			if (returnVal == -1)
+			retrnVal = execve(data->tokens[0], data->tokens, data->env);
+			if (retrnVal == -1)
 				perror(data->cmdLine), exit(EXIT_FAILURE);
 		}
 		else
@@ -43,3 +42,4 @@ int execute(progData *data)
 	}
 	return (0);
 }
+

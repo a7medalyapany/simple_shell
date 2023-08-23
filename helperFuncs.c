@@ -55,3 +55,4 @@ void freeArr(char **array)
 		array = NULL;
 	}
 }
+

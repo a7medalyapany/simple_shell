@@ -27,8 +27,7 @@ int myGetLine(progData *data)
 			return (-1);
 
 		i = 0;
-		do
-		{
+		do {
 			arrCmd[i] = myStrDup(myStrTok(i ? NULL : buff, "\n;"));
 			i = chkOps(arrCmd, i, arrOPs);
 		} while (arrCmd[i++]);
@@ -84,3 +83,4 @@ int chkOps(char *arrCmd[], int i, char arrOPs[])
 	}
 	return (i);
 }
+

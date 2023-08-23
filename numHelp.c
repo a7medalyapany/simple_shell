@@ -82,3 +82,4 @@ int countChars(char *string, char *character)
 	}
 	return (counter);
 }
+

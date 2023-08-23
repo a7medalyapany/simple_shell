@@ -3,7 +3,7 @@
 /**
  * myExit - exit of the program with the stts
  * @data: struct for the program's data
- * Return: zero if sucess, or other number if its declared in the arguments
+ * Return: zero if sucess, or other number
  */
 int myExit(progData *data)
 {
@@ -12,7 +12,9 @@ int myExit(progData *data)
 	if (data->tokens[1] != NULL)
 	{
 		for (i = 0; data->tokens[1][i]; i++)
-			if ((data->tokens[1][i] < '0' || data->tokens[1][i] > '9') && data->tokens[1][i] != '+')
+			if ((data->tokens[1][i] < '0' ||
+				data->tokens[1][i] > '9') &&
+				data->tokens[1][i] != '+')
 			{
 				errno = 2;
 				return (2);
@@ -26,7 +28,7 @@ int myExit(progData *data)
 /**
  * myCD - change the current directory
  * @data: struct for the program's data
- * Return: zero if sucess, or other number if its declared in the arguments
+ * Return: zero if sucess, or other number
  */
 int myCD(progData *data)
 {
@@ -65,7 +67,7 @@ int myCD(progData *data)
  * setWD - set the work directory
  * @data: struct for the program's data
  * @newDir: path to be set as work directory
- * Return: zero if sucess, or other number if its declared in the arguments
+ * Return: zero if sucess, or other number
  */
 int setWD(progData *data, char *newDir)
 {
@@ -91,7 +93,7 @@ int setWD(progData *data, char *newDir)
 /**
  * myHelp - shows the environment where the shell runs
  * @data: struct for the program's data
- * Return: zero if sucess, or other number if its declared in the arguments
+ * Return: zero if sucess, or other number
  */
 int myHelp(progData *data)
 {
@@ -134,7 +136,7 @@ int myHelp(progData *data)
 /**
  * myAlias - add, remove or show aliases
  * @data: struct for the program's data
- * Return: zero if sucess, or other number if its declared in the arguments
+ * Return: zero if sucess, or other number
  */
 int myAlias(progData *data)
 {
@@ -153,3 +155,4 @@ int myAlias(progData *data)
 
 	return (0);
 }
+
