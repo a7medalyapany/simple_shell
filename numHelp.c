@@ -55,7 +55,6 @@ int myAtoi(char *s)
         s++;
     }
 
-    /*2 - extract the number */
     while ('0' <= *s && *s <= '9' && *s != '\0')
     {
 

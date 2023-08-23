@@ -66,7 +66,7 @@ int myStrCmp(char *string1, char *string2, int number)
     if (string1 == NULL || string2 == NULL)
         return (0);
 
-    if (number == 0) /* infinite longitud */
+    if (number == 0)
     {
         if (myStrLen(string1) != myStrLen(string2))
             return (0);
@@ -77,7 +77,7 @@ int myStrCmp(char *string1, char *string2, int number)
         }
         return (1);
     }
-    else /* if there is a number of chars to be compared */
+    else
     {
         for (itrtor = 0; itrtor < number; itrtor++)
         {
@@ -116,12 +116,10 @@ char *myStrCon(char *string1, char *string2)
         return (NULL);
     }
 
-    /* copy of string1 */
     for (length1 = 0; string1[length1] != '\0'; length1++)
         result[length1] = string1[length1];
     free(string1);
 
-    /* copy of string2 */
     for (length2 = 0; string2[length2] != '\0'; length2++)
     {
         result[length1] = string2[length2];

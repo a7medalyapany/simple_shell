@@ -13,34 +13,27 @@ int myGetLine(progData *data)
     static char arrOPs[10] = {'\0'};
     ssize_t bytesRead, i = 0;
 
-    /* check if doesnot exist more commands in the array */
-    /* and checks the logical operators */
     if (!arrCmd[0] || (arrOPs[0] == '&' && errno != 0) ||
         (arrOPs[0] == '|' && errno == 0))
     {
-        /*free the memory allocated in the array if it exists */
         for (i = 0; arrCmd[i]; i++)
         {
             free(arrCmd[i]);
             arrCmd[i] = NULL;
         }
 
-        /* read from the file descriptor int to buff */
         bytesRead = read(data->FD, &buff, BUFFER_SIZE - 1);
         if (bytesRead == 0)
             return (-1);
 
-        /* split lines for \n or ; */
         i = 0;
         do
         {
             arrCmd[i] = myStrDup(myStrTok(i ? NULL : buff, "\n;"));
-            /*checks and split for && and || operators*/
             i = chkOps(arrCmd, i, arrOPs);
         } while (arrCmd[i++]);
     }
 
-    /*obtains the next command (command 0) and remove it for the array*/
     data->inLine = arrCmd[0];
     for (i = 0; arrCmd[i]; i++)
     {
@@ -64,12 +57,10 @@ int chkOps(char *arrCmd[], int i, char arrOPs[])
     char *temp = NULL;
     int j;
 
-    /* checks for the & char in the command line*/
     for (j = 0; arrCmd[i] != NULL && arrCmd[i][j]; j++)
     {
         if (arrCmd[i][j] == '&' && arrCmd[i][j + 1] == '&')
         {
-            /* split the line when chars && was found */
             temp = arrCmd[i];
             arrCmd[i][j] = '\0';
             arrCmd[i] = myStrDup(arrCmd[i]);
@@ -81,7 +72,6 @@ int chkOps(char *arrCmd[], int i, char arrOPs[])
         }
         if (arrCmd[i][j] == '|' && arrCmd[i][j + 1] == '|')
         {
-            /* split the line when chars || was found */
             temp = arrCmd[i];
             arrCmd[i][j] = '\0';
             arrCmd[i] = myStrDup(arrCmd[i]);
