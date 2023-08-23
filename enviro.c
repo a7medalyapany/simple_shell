@@ -8,25 +8,25 @@
  */
 char *envGK(char *key, progData *data)
 {
-    int i, keyLen = 0;
+	int i, keyLen = 0;
 
-    /* validate the arguments */
-    if (key == NULL || data->env == NULL)
-        return (NULL);
+	/* validate the arguments */
+	if (key == NULL || data->env == NULL)
+		return (NULL);
 
-    /* obtains the leng of the variable requested */
-    keyLen = myStrLen(key);
+	/* obtains the leng of the variable requested */
+	keyLen = myStrLen(key);
 
-    for (i = 0; data->env[i]; i++)
-    { /* Iterates through the environ and check for coincidence of the vame */
-        if (myStrCmp(key, data->env[i], keyLen) &&
-            data->env[i][keyLen] == '=')
-        { /* returns the value of the key NAME=  when find it*/
-            return (data->env[i] + keyLen + 1);
-        }
-    }
-    /* returns NULL if did not find it */
-    return (NULL);
+	for (i = 0; data->env[i]; i++)
+	{ /* Iterates through the environ and check for coincidence of the vame */
+		if (myStrCmp(key, data->env[i], keyLen) &&
+			data->env[i][keyLen] == '=')
+		{ /* returns the value of the key NAME=  when find it*/
+			return (data->env[i] + keyLen + 1);
+		}
+	}
+	/* returns NULL if did not find it */
+	return (NULL);
 }
 
 /**
@@ -40,31 +40,31 @@ char *envGK(char *key, progData *data)
 
 int envSK(char *key, char *value, progData *data)
 {
-    int i, keyLen = 0, isNewKey = 1;
+	int i, keyLen = 0, isNewKey = 1;
 
-    if (key == NULL || value == NULL || data->env == NULL)
-        return (1);
+	if (key == NULL || value == NULL || data->env == NULL)
+		return (1);
 
-    keyLen = myStrLen(key);
+	keyLen = myStrLen(key);
 
-    for (i = 0; data->env[i]; i++)
-    {
-        if (myStrCmp(key, data->env[i], keyLen) &&
-            data->env[i][keyLen] == '=')
-        {
-            isNewKey = 0;
-            free(data->env[i]);
-            break;
-        }
-    }
-    data->env[i] = myStrCon(myStrDup(key), "=");
-    data->env[i] = myStrCon(data->env[i], value);
+	for (i = 0; data->env[i]; i++)
+	{
+		if (myStrCmp(key, data->env[i], keyLen) &&
+			data->env[i][keyLen] == '=')
+		{
+			isNewKey = 0;
+			free(data->env[i]);
+			break;
+		}
+	}
+	data->env[i] = myStrCon(myStrDup(key), "=");
+	data->env[i] = myStrCon(data->env[i], value);
 
-    if (isNewKey)
-    {
-        data->env[i + 1] = NULL;
-    }
-    return (0);
+	if (isNewKey)
+	{
+		data->env[i + 1] = NULL;
+	}
+	return (0);
 }
 
 /**
@@ -75,30 +75,30 @@ int envSK(char *key, char *value, progData *data)
  */
 int envRK(char *key, progData *data)
 {
-    int i, keyLen = 0;
+	int i, keyLen = 0;
 
-    if (key == NULL || data->env == NULL)
-        return (0);
+	if (key == NULL || data->env == NULL)
+		return (0);
 
-    keyLen = myStrLen(key);
+	keyLen = myStrLen(key);
 
-    for (i = 0; data->env[i]; i++)
-    {
-        if (myStrCmp(key, data->env[i], keyLen) &&
-            data->env[i][keyLen] == '=')
-        {
-            free(data->env[i]);
+	for (i = 0; data->env[i]; i++)
+	{
+		if (myStrCmp(key, data->env[i], keyLen) &&
+			data->env[i][keyLen] == '=')
+		{
+			free(data->env[i]);
 
-            i++;
-            for (; data->env[i]; i++)
-            {
-                data->env[i - 1] = data->env[i];
-            }
-            data->env[i - 1] = NULL;
-            return (1);
-        }
-    }
-    return (0);
+			i++;
+			for (; data->env[i]; i++)
+			{
+				data->env[i - 1] = data->env[i];
+			}
+			data->env[i - 1] = NULL;
+			return (1);
+		}
+	}
+	return (0);
 }
 
 /**
@@ -108,11 +108,11 @@ int envRK(char *key, progData *data)
  */
 void printEnv(progData *data)
 {
-    int j;
+	int j;
 
-    for (j = 0; data->env[j]; j++)
-    {
-        aiPrint(data->env[j]);
-        aiPrint("\n");
-    }
+	for (j = 0; data->env[j]; j++)
+	{
+		aiPrint(data->env[j]);
+		aiPrint("\n");
+	}
 }

@@ -8,21 +8,21 @@
  */
 int main(int argc, char *argv[], char *env[])
 {
-    progData ds = {NULL}, *data = &ds;
-    char *prompt = "";
+	progData ds = {NULL}, *data = &ds;
+	char *prompt = "";
 
-    initData(data, argc, argv, env);
+	initData(data, argc, argv, env);
 
-    signal(SIGINT, hCRTLC);
+	signal(SIGINT, hCRTLC);
 
-    if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && argc == 1)
-    {
-        errno = 2;
-        prompt = PROMPT_MSG;
-    }
-    errno = 0;
-    showPrompt(prompt, data);
-    return (0);
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && argc == 1)
+	{
+		errno = 2;
+		prompt = PROMPT_MSG;
+	}
+	errno = 0;
+	showPrompt(prompt, data);
+	return (0);
 }
 
 /**
@@ -32,8 +32,8 @@ int main(int argc, char *argv[], char *env[])
  */
 void hCRTLC(int opr UNUSED)
 {
-    aiPrint("\n");
-    aiPrint(PROMPT_MSG);
+	aiPrint("\n");
+	aiPrint(PROMPT_MSG);
 }
 
 /**
@@ -45,44 +45,44 @@ void hCRTLC(int opr UNUSED)
  */
 void initData(progData *data, int argc, char *argv[], char **env)
 {
-    int i = 0;
+	int i = 0;
 
-    data->progName = argv[0];
-    data->inLine = NULL;
-    data->cmdLine = NULL;
-    data->exeCounter = 0;
+	data->progName = argv[0];
+	data->inLine = NULL;
+	data->cmdLine = NULL;
+	data->exeCounter = 0;
 
-    if (argc == 1)
-        data->FD = STDIN_FILENO;
-    else
-    {
-        data->FD = open(argv[1], O_RDONLY);
-        if (data->FD == -1)
-        {
-            aiPrinte(data->progName);
-            aiPrinte(": 0: Can't open ");
-            aiPrinte(argv[1]);
-            aiPrinte("\n");
-            exit(127);
-        }
-    }
-    data->tokens = NULL;
-    data->env = malloc(sizeof(char *) * 50);
-    if (env)
-    {
-        for (; env[i]; i++)
-        {
-            data->env[i] = myStrDup(env[i]);
-        }
-    }
-    data->env[i] = NULL;
-    env = data->env;
+	if (argc == 1)
+		data->FD = STDIN_FILENO;
+	else
+	{
+		data->FD = open(argv[1], O_RDONLY);
+		if (data->FD == -1)
+		{
+			aiPrinte(data->progName);
+			aiPrinte(": 0: Can't open ");
+			aiPrinte(argv[1]);
+			aiPrinte("\n");
+			exit(127);
+		}
+	}
+	data->tokens = NULL;
+	data->env = malloc(sizeof(char *) * 50);
+	if (env)
+	{
+		for (; env[i]; i++)
+		{
+			data->env[i] = myStrDup(env[i]);
+		}
+	}
+	data->env[i] = NULL;
+	env = data->env;
 
-    data->aliasList = malloc(sizeof(char *) * 20);
-    for (i = 0; i < 20; i++)
-    {
-        data->aliasList[i] = NULL;
-    }
+	data->aliasList = malloc(sizeof(char *) * 20);
+	for (i = 0; i < 20; i++)
+	{
+		data->aliasList[i] = NULL;
+	}
 }
 /**
  * showPrompt - its a infinite loop that shows the prompt
@@ -91,30 +91,30 @@ void initData(progData *data, int argc, char *argv[], char **env)
  */
 void showPrompt(char *prompt, progData *data)
 {
-    int errCode = 0, string_len = 0;
+	int errCode = 0, string_len = 0;
 
-    while (++(data->exeCounter))
-    {
-        aiPrint(prompt);
-        errCode = string_len = myGetLine(data);
+	while (++(data->exeCounter))
+	{
+		aiPrint(prompt);
+		errCode = string_len = myGetLine(data);
 
-        if (errCode == EOF)
-        {
-            freeAD(data);
-            exit(errno);
-        }
-        if (string_len >= 1)
-        {
-            expAlias(data);
-            expVars(data);
-            tokenize(data);
-            if (data->tokens[0])
-            {
-                errCode = execute(data);
-                if (errCode != 0)
-                    aiPrintErr(errCode, data);
-            }
-            freeCD(data);
-        }
-    }
+		if (errCode == EOF)
+		{
+			freeAD(data);
+			exit(errno);
+		}
+		if (string_len >= 1)
+		{
+			expAlias(data);
+			expVars(data);
+			tokenize(data);
+			if (data->tokens[0])
+			{
+				errCode = execute(data);
+				if (errCode != 0)
+					aiPrintErr(errCode, data);
+			}
+			freeCD(data);
+		}
+	}
 }

@@ -7,16 +7,16 @@
  */
 void freeCD(progData *data)
 {
-    if (data->tokens)
-        freeArr(data->tokens);
-    if (data->inLine)
-        free(data->inLine);
-    if (data->cmdLine)
-        free(data->cmdLine);
+	if (data->tokens)
+		freeArr(data->tokens);
+	if (data->inLine)
+		free(data->inLine);
+	if (data->cmdLine)
+		free(data->cmdLine);
 
-    data->inLine = NULL;
-    data->cmdLine = NULL;
-    data->tokens = NULL;
+	data->inLine = NULL;
+	data->cmdLine = NULL;
+	data->tokens = NULL;
 }
 
 /**
@@ -26,14 +26,14 @@ void freeCD(progData *data)
  */
 void freeAD(progData *data)
 {
-    if (data->FD != 0)
-    {
-        if (close(data->FD))
-            perror(data->progName);
-    }
-    freeCD(data);
-    freeArr(data->env);
-    freeArr(data->aliasList);
+	if (data->FD != 0)
+	{
+		if (close(data->FD))
+			perror(data->progName);
+	}
+	freeCD(data);
+	freeArr(data->env);
+	freeArr(data->aliasList);
 }
 
 /**
@@ -44,14 +44,14 @@ void freeAD(progData *data)
  */
 void freeArr(char **array)
 {
-    int i;
+	int i;
 
-    if (array != NULL)
-    {
-        for (i = 0; array[i]; i++)
-            free(array[i]);
+	if (array != NULL)
+	{
+		for (i = 0; array[i]; i++)
+			free(array[i]);
 
-        free(array);
-        array = NULL;
-    }
+		free(array);
+		array = NULL;
+	}
 }

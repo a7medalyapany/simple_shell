@@ -8,7 +8,7 @@
  */
 int aiPrint(char *string)
 {
-    return (write(STDOUT_FILENO, string, myStrLen(string)));
+	return (write(STDOUT_FILENO, string, myStrLen(string)));
 }
 /**
  * aiPrinte - writes a array of chars in the standar error
@@ -18,7 +18,7 @@ int aiPrint(char *string)
  */
 int aiPrinte(char *string)
 {
-    return (write(STDERR_FILENO, string, myStrLen(string)));
+	return (write(STDERR_FILENO, string, myStrLen(string)));
 }
 
 /**
@@ -30,41 +30,41 @@ int aiPrinte(char *string)
  */
 int aiPrintErr(int errorcode, progData *data)
 {
-    char n_as_string[10] = {'\0'};
+	char n_as_string[10] = {'\0'};
 
-    longStr((long)data->exeCounter, n_as_string, 10);
+	longStr((long)data->exeCounter, n_as_string, 10);
 
-    if (errorcode == 2 || errorcode == 3)
-    {
-        aiPrinte(data->progName);
-        aiPrinte(": ");
-        aiPrinte(n_as_string);
-        aiPrinte(": ");
-        aiPrinte(data->tokens[0]);
-        if (errorcode == 2)
-            aiPrinte(": Illegal number: ");
-        else
-            aiPrinte(": can't cd to ");
-        aiPrinte(data->tokens[1]);
-        aiPrinte("\n");
-    }
-    else if (errorcode == 127)
-    {
-        aiPrinte(data->progName);
-        aiPrinte(": ");
-        aiPrinte(n_as_string);
-        aiPrinte(": ");
-        aiPrinte(data->cmdLine);
-        aiPrinte(": not found\n");
-    }
-    else if (errorcode == 126)
-    {
-        aiPrinte(data->progName);
-        aiPrinte(": ");
-        aiPrinte(n_as_string);
-        aiPrinte(": ");
-        aiPrinte(data->cmdLine);
-        aiPrinte(": Permission denied\n");
-    }
-    return (0);
+	if (errorcode == 2 || errorcode == 3)
+	{
+		aiPrinte(data->progName);
+		aiPrinte(": ");
+		aiPrinte(n_as_string);
+		aiPrinte(": ");
+		aiPrinte(data->tokens[0]);
+		if (errorcode == 2)
+			aiPrinte(": Illegal number: ");
+		else
+			aiPrinte(": can't cd to ");
+		aiPrinte(data->tokens[1]);
+		aiPrinte("\n");
+	}
+	else if (errorcode == 127)
+	{
+		aiPrinte(data->progName);
+		aiPrinte(": ");
+		aiPrinte(n_as_string);
+		aiPrinte(": ");
+		aiPrinte(data->cmdLine);
+		aiPrinte(": not found\n");
+	}
+	else if (errorcode == 126)
+	{
+		aiPrinte(data->progName);
+		aiPrinte(": ");
+		aiPrinte(n_as_string);
+		aiPrinte(": ");
+		aiPrinte(data->cmdLine);
+		aiPrinte(": Permission denied\n");
+	}
+	return (0);
 }

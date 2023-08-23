@@ -7,18 +7,18 @@
  */
 int mySetEnv(progData *data)
 {
-    if (data->tokens[1] == NULL || data->tokens[2] == NULL)
-        return (0);
-    if (data->tokens[3] != NULL)
-    {
-        errno = E2BIG;
-        perror(data->cmdLine);
-        return (5);
-    }
+	if (data->tokens[1] == NULL || data->tokens[2] == NULL)
+		return (0);
+	if (data->tokens[3] != NULL)
+	{
+		errno = E2BIG;
+		perror(data->cmdLine);
+		return (5);
+	}
 
-    envSK(data->tokens[1], data->tokens[2], data);
+	envSK(data->tokens[1], data->tokens[2], data);
 
-    return (0);
+	return (0);
 }
 
 /**
@@ -28,15 +28,15 @@ int mySetEnv(progData *data)
  */
 int myUnSetEnv(progData *data)
 {
-    if (data->tokens[1] == NULL)
-        return (0);
-    if (data->tokens[2] != NULL)
-    {
-        errno = E2BIG;
-        perror(data->cmdLine);
-        return (5);
-    }
-    envRK(data->tokens[1], data);
+	if (data->tokens[1] == NULL)
+		return (0);
+	if (data->tokens[2] != NULL)
+	{
+		errno = E2BIG;
+		perror(data->cmdLine);
+		return (5);
+	}
+	envRK(data->tokens[1], data);
 
-    return (0);
+	return (0);
 }
