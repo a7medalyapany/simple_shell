@@ -13,7 +13,7 @@ int myExit(progData *data)
 	{
 		for (i = 0; data->tokens[1][i]; i++)
 			if ((data->tokens[1][i] < '0' ||
-				data->tokens[1][i] > '9') &&
+				 data->tokens[1][i] > '9') &&
 				data->tokens[1][i] != '+')
 			{
 				errno = 2;
@@ -23,71 +23,6 @@ int myExit(progData *data)
 	}
 	freeAD(data);
 	exit(errno);
-}
-
-/**
- * myCD - change the current directory
- * @data: struct for the program's data
- * Return: zero if sucess, or other number
- */
-int myCD(progData *data)
-{
-	char *dirHome = envGK("HOME", data), *dirOld = NULL;
-	char oldDir[128] = {0};
-	int errCode = 0;
-
-	if (data->tokens[1])
-	{
-		if (myStrCmp(data->tokens[1], "-", 0))
-		{
-			dirOld = envGK("OLDPWD", data);
-			if (dirOld)
-				errCode = setWD(data, dirOld);
-			aiPrint(envGK("PWD", data));
-			aiPrint("\n");
-
-			return (errCode);
-		}
-		else
-		{
-			return (setWD(data, data->tokens[1]));
-		}
-	}
-	else
-	{
-		if (!dirHome)
-			dirHome = getcwd(oldDir, 128);
-
-		return (setWD(data, dirHome));
-	}
-	return (0);
-}
-
-/**
- * setWD - set the work directory
- * @data: struct for the program's data
- * @newDir: path to be set as work directory
- * Return: zero if sucess, or other number
- */
-int setWD(progData *data, char *newDir)
-{
-	char oldDir[128] = {0};
-	int err_code = 0;
-
-	getcwd(oldDir, 128);
-
-	if (!myStrCmp(oldDir, newDir, 0))
-	{
-		err_code = chdir(newDir);
-		if (err_code == -1)
-		{
-			errno = 2;
-			return (3);
-		}
-		envSK("PWD", newDir, data);
-	}
-	envSK("OLDPWD", oldDir, data);
-	return (0);
 }
 
 /**
@@ -132,27 +67,3 @@ int myHelp(progData *data)
 	perror(data->cmdLine);
 	return (0);
 }
-
-/**
- * myAlias - add, remove or show aliases
- * @data: struct for the program's data
- * Return: zero if sucess, or other number
- */
-int myAlias(progData *data)
-{
-	int i = 0;
-
-	if (data->tokens[1] == NULL)
-		return (printAlias(data, NULL));
-
-	while (data->tokens[++i])
-	{
-		if (countChars(data->tokens[i], "="))
-			setAlias(data->tokens[i], data);
-		else
-			printAlias(data, data->tokens[i]);
-	}
-
-	return (0);
-}
-

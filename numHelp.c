@@ -45,7 +45,7 @@ int myAtoi(char *s)
 {
 	int sign = 1;
 	unsigned int number = 0;
-	/*1- analisys sign*/
+
 	while (!('0' <= *s && *s <= '9') && *s != '\0')
 	{
 		if (*s == '-')
@@ -82,4 +82,3 @@ int countChars(char *string, char *character)
 	}
 	return (counter);
 }
-

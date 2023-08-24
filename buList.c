@@ -12,8 +12,6 @@ int buList(progData *data)
 	builtins options[] = {
 		{"exit", myExit},
 		{"help", myHelp},
-		{"cd", myCD},
-		{"alias", myAlias},
 		{"env", myEnv},
 		{"setenv", mySetEnv},
 		{"unsetenv", myUnSetEnv},
@@ -28,4 +26,3 @@ int buList(progData *data)
 	}
 	return (-1);
 }
-

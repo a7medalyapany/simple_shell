@@ -105,8 +105,6 @@ void showPrompt(char *prompt, progData *data)
 		}
 		if (string_len >= 1)
 		{
-			expAlias(data);
-			expVars(data);
 			tokenize(data);
 			if (data->tokens[0])
 			{
@@ -118,4 +116,3 @@ void showPrompt(char *prompt, progData *data)
 		}
 	}
 }
-
