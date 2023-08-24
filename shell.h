@@ -49,7 +49,6 @@ typedef struct builtins
     int (*function)(progData *data);
 } builtins;
 
-
 void initData(progData *data, int arc, char *argv[], char **env);
 void showPrompt(char *prompt, progData *data);
 void hCRTLC(int opr UNUSED);
@@ -61,10 +60,6 @@ char *myStrTok(char *line, char *delim);
 
 int myGetLine(progData *data);
 int chkOps(char *arrCmd[], int i, char arrOPs[]);
-
-void expVars(progData *data);
-void expAlias(progData *data);
-int buffAdd(char *buffer, char *str_to_add);
 
 char **tokenizePath(progData *data);
 int findProg(progData *data);
@@ -85,9 +80,6 @@ int aiPrinte(char *string);
 int aiPrintErr(int errorcode, progData *data);
 int aiPrint(char *string);
 
-int myCD(progData *data);
-int setWD(progData *data, char *newDir);
-int myAlias(progData *data);
 int myHelp(progData *data);
 int myExit(progData *data);
 
@@ -103,9 +95,5 @@ int envSK(char *key, char *value, progData *data);
 void longStr(long number, char *string, int base);
 int myAtoi(char *s);
 int countChars(char *string, char *character);
-
-char *getAlias(progData *data, char *alias);
-int setAlias(char *alias_string, progData *data);
-int printAlias(progData *data, char *alias);
 
 #endif

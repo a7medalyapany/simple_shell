@@ -30,6 +30,40 @@ char *envGK(char *key, progData *data)
 }
 
 /**
+ * envRK - remove a key from the environment
+ * @key: the key to remove
+ * @data: the sructure of the program's data
+ * Return: 1 if the key was removed, 0 if the key does not exist;
+ */
+int envRK(char *key, progData *data)
+{
+	int i, keyLen = 0;
+
+	if (key == NULL || data->env == NULL)
+		return (0);
+
+	keyLen = myStrLen(key);
+
+	for (i = 0; data->env[i]; i++)
+	{
+		if (myStrCmp(key, data->env[i], keyLen) &&
+			data->env[i][keyLen] == '=')
+		{
+			free(data->env[i]);
+
+			i++;
+			for (; data->env[i]; i++)
+			{
+				data->env[i - 1] = data->env[i];
+			}
+			data->env[i - 1] = NULL;
+			return (1);
+		}
+	}
+	return (0);
+}
+
+/**
  * envSK - overwrite the value of the environment variable
  * or create it if does not exist.
  * @key: name of the variable to set
@@ -68,40 +102,6 @@ int envSK(char *key, char *value, progData *data)
 }
 
 /**
- * envRK - remove a key from the environment
- * @key: the key to remove
- * @data: the sructure of the program's data
- * Return: 1 if the key was removed, 0 if the key does not exist;
- */
-int envRK(char *key, progData *data)
-{
-	int i, keyLen = 0;
-
-	if (key == NULL || data->env == NULL)
-		return (0);
-
-	keyLen = myStrLen(key);
-
-	for (i = 0; data->env[i]; i++)
-	{
-		if (myStrCmp(key, data->env[i], keyLen) &&
-			data->env[i][keyLen] == '=')
-		{
-			free(data->env[i]);
-
-			i++;
-			for (; data->env[i]; i++)
-			{
-				data->env[i - 1] = data->env[i];
-			}
-			data->env[i - 1] = NULL;
-			return (1);
-		}
-	}
-	return (0);
-}
-
-/**
  * printEnv - prints the current environ
  * @data: struct for the program's data
  * Return: nothing
@@ -116,4 +116,3 @@ void printEnv(progData *data)
 		aiPrint("\n");
 	}
 }
-
