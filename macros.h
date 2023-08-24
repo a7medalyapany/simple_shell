@@ -20,9 +20,9 @@
                     "	if the argumenthelp is - (cd -), the command will be interpreted\n" \
                     "	as cd $OLDPWD.\n\n"
 
-#define HELP_EXIT_MSG "exit=\n"                                                                  \
-                      "exit:\texit [stts]\n\n"                                                 \
-                      "	Exit of the simple-shell.\n\n"                                           \
+#define HELP_EXIT_MSG "exit=\n"                                                              \
+                      "exit:\texit [stts]\n\n"                                               \
+                      "	Exit of the simple-shell.\n\n"                                       \
                       "	Exits the shell with a stts of N.  If N is omitted, the exit stts\n" \
                       "	is that of the last command executed.\n\n"
 
@@ -51,7 +51,7 @@
                  "	Arguments:\n\n"                                                          \
                  "	BUILTIN_NAME specifiying a help topic.\n\n"                              \
                  "	cd\t[dir]\n"                                                             \
-                 "	exit\t[stts]\n"                                                        \
+                 "	exit\t[stts]\n"                                                          \
                  "	env\n"                                                                   \
                  "	setenv\t[variable value]\n"                                              \
                  "	unset\t[variable]\n"                                                     \
